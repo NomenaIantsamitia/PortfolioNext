@@ -1,6 +1,7 @@
+'use client'
 import React from 'react';
-import SkillCard from './SkillCard';
 import { skills } from '../data/skills';
+import StarSkillCard from './StarSkillCard';
 
 const SkillsSection: React.FC = () => {
   const categories = Array.from(new Set(skills.map(skill => skill.category)));
@@ -26,7 +27,10 @@ const SkillsSection: React.FC = () => {
               {skills
                 .filter(skill => skill.category === category)
                 .map((skill) => (
-                  <SkillCard key={skill.name} {...skill} />
+                //  <SkillCard key={skill.name} {...skill} />
+              // <CircularSkillCard key={skill.name} {...skill} />
+
+<StarSkillCard key={skill.name} {...skill} />
                 ))
               }
             </div>
