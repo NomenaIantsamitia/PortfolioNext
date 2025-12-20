@@ -1,6 +1,8 @@
+'use client'
 import React from 'react';
 import { ExternalLink, Github, Sparkles } from 'lucide-react';
 import { Project } from '../types';
+import Image from 'next/image';
 
 const ProjectCard: React.FC<Project> = ({ 
   title, 
@@ -21,16 +23,19 @@ const ProjectCard: React.FC<Project> = ({
       </div>
     )}
     
-    {/* Section Image améliorée */}
     <div className="relative h-48 overflow-hidden">
       {imageSrc ? (
         <>
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent z-10 opacity-60"></div>
-          <img 
-            src={imageSrc} 
-            alt={title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-          />
+          <div className="relative w-full h-full">
+            <Image 
+              src={imageSrc} 
+              alt={title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </div>
         </>
       ) : (
         <div className="w-full h-full bg-gradient-to-br from-indigo-500/10 to-purple-500/10 flex items-center justify-center">
@@ -43,11 +48,9 @@ const ProjectCard: React.FC<Project> = ({
         </div>
       )}
       
-      {/* Overlay au hover */}
       <div className="absolute inset-0 bg-indigo-500/0 group-hover:bg-indigo-500/10 transition-all duration-500 z-20"></div>
     </div>
     
-    {/* Contenu */}
     <div className="p-6 relative z-10">
       <h3 className="text-xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors duration-300">
         {title}
@@ -57,7 +60,6 @@ const ProjectCard: React.FC<Project> = ({
         {description}
       </p>
       
-      {/* Technologies avec design amélioré */}
       <div className="flex flex-wrap gap-2 mb-6">
         {technologies.map((tech, index) => (
           <span 
@@ -72,7 +74,6 @@ const ProjectCard: React.FC<Project> = ({
         ))}
       </div>
       
-      {/* Boutons avec design amélioré */}
       <div className="flex space-x-3">
         <a 
           href={demoLink}
@@ -96,7 +97,6 @@ const ProjectCard: React.FC<Project> = ({
       </div>
     </div>
     
-    {/* Effet de bordure animé */}
     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-5 transition-opacity duration-500 pointer-events-none"></div>
   </div>
 );
