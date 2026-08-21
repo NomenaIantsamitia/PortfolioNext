@@ -27,4 +27,13 @@ export const projects: Project[] = [
     githubLink: 'https://github.com/NomenaIantsamitia/jeu-tic-tac-toe',
     featured: false
   },
+    {
+    title: 'ReadWiseAI',
+    description: 'Un jeu de Morpion (Tic-Tac-Toe) moderne et interactif développé avec HTML5, CSS3 et JavaScript ES6+.',
+    technologies: ['HTML5', 'CSS3', 'JavaScript ES6+'],
+    imageSrc: '/ReadWise.png',
+    demoLink: 'https://nomenaiantsamitia.github.io/jeu-tic-tac-toe/',
+    githubLink: 'https://github.com/NomenaIantsamitia/jeu-tic-tac-toe',
+    featured: false
+  },
 ];

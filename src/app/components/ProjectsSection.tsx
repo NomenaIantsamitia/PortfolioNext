@@ -10,7 +10,8 @@ const ProjectsSection: React.FC = () => (
           Mes <span className="text-indigo-400">Projets</span>
         </h2>
         <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-          Une sélection de mes réalisations les plus significatives, alliant design et performance.
+          Une sélection de mes réalisations les plus significatives, alliant
+          design et performance.
         </p>
       </div>
 
