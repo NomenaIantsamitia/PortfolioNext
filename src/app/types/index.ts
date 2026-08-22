@@ -11,8 +11,12 @@ export interface Project {
   title: string;
   description: string;
   technologies: string[];
-  imageSrc: string;
-  demoLink: string;
-  githubLink: string;
-  featured: boolean;
+  imageSrc?: string;
+  videoSrc?: string;
+  demoLink?: string;
+  githubFrontend?: string;
+  githubBackend?: string;
+  githubLink?: string;
+  featured?: boolean;
+  status?: 'live' | 'soon'; // NOUVEAU — défaut 'live'
 }
