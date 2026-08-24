@@ -7,7 +7,7 @@ export const projects: Project[] = [
       'Application e-commerce complète avec panier, paiement et dashboard admin.',
     technologies: ['Next.js', 'TypeScript', 'NestJS', 'Prisma', 'PostgreSQL'],
     imageSrc: '/book.png',
-    videoSrc: '/videos/booktrack-demo.mp4',
+    videoSrc: 'https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/lv_0_20260822135652.mp4',
     demoLink: 'https://frontend-book-track.vercel.app/',
     status: 'soon',
     githubFrontend: 'https://github.com/NomenaIantsamitia/Book',
