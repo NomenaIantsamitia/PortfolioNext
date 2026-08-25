@@ -14,8 +14,9 @@ import {
   Maximize2,
   X,
   Clapperboard,
+  Smartphone,
 } from 'lucide-react';
-import { Project } from '../types';
+import { Project, ProjectVideo } from '../types';
 import Image from 'next/image';
 
 interface ProjectCardProps extends Project {
@@ -33,12 +34,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   technologies,
   imageSrc,
   videoSrc,
+  videos: videosProp,
   demoLink,
   githubLink,
   githubFrontend,
   githubBackend,
   featured,
   status = 'live',
+  platforms,
   index,
   isActive,
   onClick,
@@ -53,11 +56,24 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [isMobile, setIsMobile] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
 
-  const isLive = status === 'live' && Boolean(demoLink);
-  const canPreviewVideo = Boolean(videoSrc) && !videoError;
-  const hasSplitRepos = Boolean(githubFrontend || githubBackend);
+  // Normalise les sources vidéo
+  const videos: ProjectVideo[] =
+    videosProp && videosProp.length > 0
+      ? videosProp
+      : videoSrc
+        ? [{ label: 'Démo', src: videoSrc, isDefault: true }]
+        : [];
 
-  // Détection responsive + préférence de mouvement réduit
+  const defaultVideo = videos.find((v) => v.isDefault) ?? videos[0];
+  const [activeVideoSrc, setActiveVideoSrc] = useState(defaultVideo?.src ?? '');
+  const [activeVideoLabel, setActiveVideoLabel] = useState(defaultVideo?.label ?? '');
+
+  const isLive = status === 'live' && Boolean(demoLink);
+  const canPreviewVideo = Boolean(activeVideoSrc) && !videoError;
+  const hasSplitRepos = Boolean(githubFrontend || githubBackend);
+  const hasMultipleVideos = videos.length > 1;
+
+  // Responsive + reduced motion
   useEffect(() => {
     const mqMobile = window.matchMedia('(max-width: 639px)');
     const mqMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -73,9 +89,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     };
   }, []);
 
+  // Charge / joue la vidéo active
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !canPreviewVideo) return;
+    if (!video || !activeVideoSrc) return;
+
+    video.src = activeVideoSrc;
+    video.load();
+    setVideoError(false);
 
     if (isActive || isFullscreen) {
       video.currentTime = 0;
@@ -84,6 +105,16 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         .then(() => setIsPlaying(true))
         .catch(() => setVideoError(true));
     } else {
+      video.pause();
+      setIsPlaying(false);
+    }
+  }, [activeVideoSrc, isActive, isFullscreen]);
+
+  // Pause quand on quitte l’état actif
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !canPreviewVideo) return;
+    if (!(isActive || isFullscreen)) {
       video.pause();
       setIsPlaying(false);
     }
@@ -96,8 +127,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       videoRef.current.pause();
       setIsPlaying(false);
     } else {
-      videoRef.current.play();
-      setIsPlaying(true);
+      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => setVideoError(true));
     }
   };
 
@@ -108,7 +138,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     setIsMuted(!isMuted);
   };
 
-  // Classes utilitaires (opacité / z-index / curseur) — indépendantes du transform 3D réel
+  const switchVideo = (v: ProjectVideo) => (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (v.src === activeVideoSrc) return;
+    setIsPlaying(false);
+    setActiveVideoSrc(v.src);
+    setActiveVideoLabel(v.label);
+  };
+
   const getStateClasses = () => {
     if (isFullscreen) {
       return 'opacity-100 shadow-2xl border-indigo-500/50 cursor-default pointer-events-auto';
@@ -137,7 +174,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     }
   };
 
-  // Transform 3D réel (CSS natif, pas d'utilitaire Tailwind fictif) — allégé sur mobile
   const getTransform = () => {
     if (isFullscreen) return 'translateX(0) translateY(0) rotateY(0deg) scale(1)';
 
@@ -191,16 +227,16 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         transitionDuration: reduceMotion ? '0ms' : undefined,
       }}
     >
-      {/* Étiquette bobine (numéro de séquence réel dans le carrousel) */}
+      {/* Étiquette bobine */}
       {!isFullscreen && (
         <div className="absolute top-3.5 right-3.5 z-30 flex items-center gap-1 px-2 py-1 rounded-md bg-black/60 border border-white/10 backdrop-blur-sm">
           <span className="text-[10px] font-mono tracking-wider text-gray-300">
-           N°{reelNumber}
+            N°{reelNumber}
           </span>
         </div>
       )}
 
-      {/* Bouton fermer en plein écran */}
+      {/* Fermer plein écran */}
       {isFullscreen && (
         <button
           onClick={(e) => {
@@ -225,7 +261,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         {featured && !isFullscreen && (
           <div className="absolute top-3.5 left-3.5 z-30 flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 px-2.5 sm:px-3 py-1 rounded-full shadow-lg shadow-amber-500/30">
             <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
-           
           </div>
         )}
 
@@ -246,7 +281,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         {canPreviewVideo && (
           <video
             ref={videoRef}
-            src={videoSrc}
             muted={isMuted}
             loop
             playsInline
@@ -261,9 +295,33 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/40 z-10 pointer-events-none" />
 
-     
+        {/* Label vue active (multi-vidéos) */}
+        {hasMultipleVideos && (isActive || isFullscreen) && activeVideoLabel && (
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 px-2.5 py-1 rounded-full bg-black/70 border border-white/10 text-[10px] sm:text-xs text-indigo-200 font-medium backdrop-blur-sm">
+            Vue : {activeVideoLabel}
+          </div>
+        )}
 
-        {/* Contrôles vidéo */}
+        {/* Sélecteur multi-vidéos */}
+        {hasMultipleVideos && (isActive || isFullscreen) && (
+          <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 z-20 flex gap-1 bg-black/70 backdrop-blur-md p-1 rounded-full border border-white/10 shadow-lg">
+            {videos.map((v) => (
+              <button
+                key={v.src}
+                onClick={switchVideo(v)}
+                className={`px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-medium transition-all whitespace-nowrap ${
+                  activeVideoSrc === v.src
+                    ? 'bg-indigo-500 text-white shadow-md'
+                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                {v.label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Contrôles play / mute / fullscreen */}
         {(isActive || isFullscreen) && canPreviewVideo && (
           <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 z-20 flex items-center gap-1.5 sm:gap-2 bg-black/70 backdrop-blur-md px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full border border-white/10 shadow-lg">
             <button
@@ -297,7 +355,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         )}
       </div>
 
-      {/* DÉTAILS (cachés en plein écran pour maximiser la vidéo) */}
+      {/* DÉTAILS */}
       {!isFullscreen && (
         <div className="p-4 sm:p-5 md:p-6 relative z-20">
           <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1.5 sm:mb-2 tracking-tight">
@@ -307,6 +365,25 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           <p className="text-xs sm:text-sm text-gray-300 mb-3 sm:mb-4 leading-relaxed line-clamp-2">
             {description}
           </p>
+
+      
+
+          {/* Badges plateformes */}
+          {platforms && platforms.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5 mb-3">
+            
+              {platforms.includes('android') && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 text-[10px] border border-emerald-500/25">
+                  <Smartphone className="w-3 h-3" /> Android
+                </span>
+              )}
+              {platforms.includes('ios') && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-gray-400/15 text-gray-200 text-[10px] border border-gray-400/25">
+                  <Smartphone className="w-3 h-3" /> iOS
+                </span>
+              )}
+            </div>
+          )}
 
           <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-5">
             {technologies.map((tech) => (

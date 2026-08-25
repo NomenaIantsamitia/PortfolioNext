@@ -13,6 +13,32 @@ export const projects: Project[] = [
     githubFrontend: 'https://github.com/NomenaIantsamitia/Book',
     featured: true,
   },
+//https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/admin.mp4
+//https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/livrur-client.mp4 
+{
+    title: 'AquaVital',
+    description:
+      'Plateforme e-commerce multilingue pour la vente d\'eau minérale — web et mobile, du stock à la livraison.',
+    technologies: ['React', 'React Native', 'Laravel', 'MySQL', 'i18n'],
+    imageSrc: '/aquavital.png',
+    videoSrc: 'https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/livrur-client.mp4',
+    videos: [
+      {
+        label: 'Client & Livreur',
+        src: 'https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/livrur-client.mp4',
+        isDefault: true,
+      },
+      {
+        label: 'Admin',
+        src: 'https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/admin.mp4',
+      },
+    ],
+    demoLink: 'https://frontend-book-track.vercel.app/',
+    status: 'soon',
+    githubFrontend: 'https://github.com/NomenaIantsamitia/Book',
+    platforms: ['web'],
+    featured: true,
+  },
   {
     title: 'MaintenaPro',
     description:
