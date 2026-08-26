@@ -14,7 +14,6 @@ export const projects: Project[] = [
     featured: true,
   },
 //https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/admin.mp4
-//https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/livrur-client.mp4 
 {
     title: 'AquaVital',
     description:
@@ -39,6 +38,7 @@ export const projects: Project[] = [
     platforms: ['web'],
     featured: true,
   },
+  
   {
     title: 'MaintenaPro',
     description:
@@ -59,12 +59,15 @@ export const projects: Project[] = [
     githubLink: 'https://github.com/NomenaIantsamitia/jeu-tic-tac-toe',
     featured: false,
   },
+
   {
     title: 'ReadWiseAI',
     description:
       'Assistant de lecture intelligent alimenté par l’IA pour résumer, annoter et explorer vos documents.',
-    technologies: ['Next.js', 'OpenAI', 'TypeScript', 'Tailwind'],
-    imageSrc: '/ReadWise.png',
+    technologies: ['Next.js', 'NestJS', 'Gemini API', 'PostgreSQL', 'Redis', 'BullMQ', 'Docker', 'TypeScript'],
+    imageSrc: '/Readwise.png',
+     videoSrc:'https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/lv_0_20260826183947.mp4',
+
     // demoLink & github à mettre à jour
     featured: false,
   },

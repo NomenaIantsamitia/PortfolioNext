@@ -1,6 +1,25 @@
 'use client'
 import React, { useState } from 'react';
-import { Mail, Github, MapPin, Calendar } from 'lucide-react';
+import {
+  Mail,
+  Github,
+  MapPin,
+  Calendar,
+  User,
+  Building2,
+  MessageSquare,
+  Send,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  Circle,
+} from 'lucide-react';
+
+const OPPORTUNITIES = [
+  { value: 'stage', label: 'Stage' },
+  { value: 'emploi', label: 'Emploi' },
+  { value: 'projet', label: 'Projet' },
+];
 
 const ContactSection: React.FC = () => {
   const [opportunite, setOpportunite] = useState('stage');
@@ -32,12 +51,12 @@ const ContactSection: React.FC = () => {
     const messageTrim = message.trim();
 
     if (!nomTrim || !emailTrim || !messageTrim) {
-      setErrorMessage('⛔ Veuillez remplir tous les champs obligatoires (nom, email, message).');
+      setErrorMessage('Veuillez remplir tous les champs obligatoires (nom, email, message).');
       return;
     }
 
     if (!emailValide(emailTrim)) {
-      setErrorMessage("⛔ L'adresse email n'est pas valide.");
+      setErrorMessage("L'adresse email n'est pas valide.");
       return;
     }
 
@@ -64,7 +83,7 @@ const ContactSection: React.FC = () => {
         /* ignore body parsing errors */
       }
 
-      setSuccessMessage('✅ Merci pour votre message ! Je vous répondrai dans les plus brefs délais. À bientôt !');
+      setSuccessMessage('Merci pour votre message ! Je vous répondrai dans les plus brefs délais. À bientôt !');
       setNom('');
       setEmail('');
       setOrganisation('');
@@ -72,108 +91,143 @@ const ContactSection: React.FC = () => {
       setOpportunite('stage');
       setTimeout(() => setSuccessMessage(''), 4000);
     } catch (error) {
-      setErrorMessage('⚠️ Erreur de connexion. Vérifiez votre internet.');
+      setErrorMessage('Erreur de connexion. Vérifiez votre internet.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section id="contact" className="py-20 bg-gray-800/30">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="text-center mb-12">
+    <section id="contact" className="relative py-20 sm:py-28 overflow-hidden bg-gray-950">
+      {/* Décor cohérent avec le hero : halos + grille subtile */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(99,102,241,0.10),transparent_50%),radial-gradient(circle_at_85%_90%,rgba(217,70,239,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px]" />
+      </div>
+
+      <div className="relative max-w-5xl mx-auto px-4">
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 font-mono text-xs text-gray-400 mb-5 px-4 py-2 rounded-full border border-gray-800 bg-gray-900/40">
+            <Circle className="w-2 h-2 fill-emerald-400 text-emerald-400 animate-pulse" />
+            <span>disponible immédiatement</span>
+          </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Travaillons <span className="text-indigo-400">Ensemble</span>
           </h2>
-          <p className="text-xl text-gray-400">
-            Ouvert aux opportunités de stage et d'emploi en développement web
+          <p className="text-lg text-gray-400 max-w-xl mx-auto">
+            Ouverte aux opportunités de stage et d'emploi en développement web
           </p>
         </div>
 
-        <div className="bg-gray-800/50 border border-gray-700 rounded-2xl p-8 md:p-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-6">Disponible immédiatement</h3>
-              <p className="text-gray-400 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+          {/* Colonne infos */}
+          <div className="md:col-span-2 flex flex-col gap-4">
+            <div className="bg-gray-900/60 border border-gray-800 rounded-2xl p-6 backdrop-blur-sm">
+              <h3 className="text-lg font-bold text-white mb-1">Nomena Misedratiana</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
                 Passionnée par le développement web, à la recherche d'une équipe où continuer à
                 apprendre et livrer un travail solide.
               </p>
+            </div>
 
-              <div className="space-y-4 mb-6">
-                <div className="flex items-center space-x-3 text-gray-300">
-                  <MapPin className="w-5 h-5 text-indigo-400" />
-                  <span>En remote ou sur site</span>
-                </div>
-                <div className="flex items-center space-x-3 text-gray-300">
-                  <Calendar className="w-5 h-5 text-indigo-400" />
-                  <span>Disponible immédiatement</span>
-                </div>
-              </div>
+            <div className="grid grid-cols-2 md:grid-cols-1 gap-3">
+              <InfoRow icon={<MapPin className="w-4 h-4" />} text="Remote ou sur site" />
+              <InfoRow icon={<Calendar className="w-4 h-4" />} text="Disponible immédiatement" />
+              <a
+                href="mailto:nomena.misedratiana05@gmail.com"
+                className="col-span-2 md:col-span-1"
+              >
+                <InfoRow
+                  icon={<Mail className="w-4 h-4" />}
+                  text="nomena.misedratiana05@gmail.com"
+                  clickable
+                  breakAll
+                />
+              </a>
+              <a
+                href="https://github.com/NomenaIantsamitia"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="col-span-2 md:col-span-1"
+              >
+                <InfoRow
+                  icon={<Github className="w-4 h-4" />}
+                  text="github.com/NomenaIantsamitia"
+                  clickable
+                />
+              </a>
+            </div>
+          </div>
 
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3 text-gray-300">
-                  <Mail className="w-5 h-5 text-indigo-400 shrink-0" />
-                  <span className="break-all">nomena.misedratiana05@gmail.com</span>
-                </div>
-                <div className="flex items-center space-x-3 text-gray-300">
-                  <Github className="w-5 h-5 text-indigo-400" />
-                  <span>github.com/NomenaIantsamitia</span>
-                </div>
+          {/* Colonne formulaire */}
+          <div className="md:col-span-3 bg-gray-900/60 border border-gray-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+            <div className="mb-5">
+              <span className="block text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">
+                Type de demande
+              </span>
+              <div className="inline-flex p-1 bg-gray-800/70 rounded-xl border border-gray-700">
+                {OPPORTUNITIES.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => {
+                      setOpportunite(opt.value);
+                      clearMessages();
+                    }}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                      opportunite === opt.value
+                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
+                        : 'text-gray-400 hover:text-gray-200'
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex flex-wrap gap-x-4 gap-y-2 mb-2">
-                {['stage', 'emploi', 'projet'].map((opt) => (
-                  <label key={opt} className="flex items-center space-x-2 text-gray-300">
-                    <input
-                      type="radio"
-                      name="opportunity"
-                      value={opt}
-                      checked={opportunite === opt}
-                      onChange={() => {
-                        setOpportunite(opt);
-                        clearMessages();
-                      }}
-                    />
-                    <span>{opt.charAt(0).toUpperCase() + opt.slice(1)}</span>
-                  </label>
-                ))}
-              </div>
-
-              <input
-                type="text"
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <Field
+                icon={<User className="w-4 h-4" />}
+                label="Nom"
                 placeholder="Votre nom"
                 value={nom}
-                onChange={(e) => {
-                  setNom(e.target.value);
+                onChange={(v) => {
+                  setNom(v);
                   clearMessages();
                 }}
-                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
-
-              <input
+              <Field
+                icon={<Mail className="w-4 h-4" />}
+                label="Email"
                 type="email"
-                placeholder="Votre email"
+                placeholder="vous@exemple.com"
                 value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
+                onChange={(v) => {
+                  setEmail(v);
                   clearMessages();
                 }}
-                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
+            </div>
 
-              <input
-                type="text"
-                placeholder="Entreprise / Organisation"
+            <div className="mb-4">
+              <Field
+                icon={<Building2 className="w-4 h-4" />}
+                label="Entreprise / Organisation (optionnel)"
+                placeholder="Nom de votre structure"
                 value={organisation}
-                onChange={(e) => {
-                  setOrganisation(e.target.value);
+                onChange={(v) => {
+                  setOrganisation(v);
                   clearMessages();
                 }}
-                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
+            </div>
 
+            <div className="mb-6">
+              <label className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">
+                <MessageSquare className="w-3.5 h-3.5" />
+                Message
+              </label>
               <textarea
                 rows={4}
                 placeholder="Parlez-moi de votre projet..."
@@ -182,27 +236,47 @@ const ContactSection: React.FC = () => {
                   setMessage(e.target.value);
                   clearMessages();
                 }}
-                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-3 bg-gray-800/70 border border-gray-700 rounded-xl text-white text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
               />
+            </div>
 
-              <button
-                onClick={envoyerMessage}
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-3 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50"
-              >
-                {loading ? 'Envoi en cours...' : 'Envoyer le message'}
-              </button>
+            <button
+              onClick={envoyerMessage}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white py-3.5 rounded-xl font-semibold transition-all duration-300 shadow-lg shadow-indigo-900/30 hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Envoi en cours...
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  Envoyer le message
+                </>
+              )}
+            </button>
 
-              {errorMessage && (
-                <div className="mt-4 p-3 rounded-md bg-red-600/20 border border-red-500 text-red-100">
-                  {errorMessage}
-                </div>
-              )}
-              {successMessage && (
-                <div className="mt-4 p-3 rounded-md bg-green-600/20 border border-green-500 text-green-100">
-                  {successMessage}
-                </div>
-              )}
+            <div
+              className={`grid transition-all duration-300 ${
+                errorMessage || successMessage ? 'grid-rows-[1fr] mt-4' : 'grid-rows-[0fr]'
+              }`}
+            >
+              <div className="overflow-hidden">
+                {errorMessage && (
+                  <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-200 text-sm">
+                    <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                    <span>{errorMessage}</span>
+                  </div>
+                )}
+                {successMessage && (
+                  <div className="flex items-start gap-2 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-200 text-sm">
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" />
+                    <span>{successMessage}</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -210,5 +284,46 @@ const ContactSection: React.FC = () => {
     </section>
   );
 };
+
+const InfoRow: React.FC<{
+  icon: React.ReactNode;
+  text: string;
+  clickable?: boolean;
+  breakAll?: boolean;
+}> = ({ icon, text, clickable, breakAll }) => (
+  <div
+    className={`flex items-center gap-3 p-3 rounded-xl border border-gray-800 bg-gray-900/40 text-sm text-gray-300 h-full ${
+      clickable ? 'hover:border-indigo-400/50 hover:text-indigo-200 transition-colors duration-200' : ''
+    }`}
+  >
+    <span className="shrink-0 w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+      {icon}
+    </span>
+    <span className={breakAll ? 'break-all' : ''}>{text}</span>
+  </div>
+);
+
+const Field: React.FC<{
+  icon: React.ReactNode;
+  label: string;
+  placeholder: string;
+  value: string;
+  onChange: (v: string) => void;
+  type?: string;
+}> = ({ icon, label, placeholder, value, onChange, type = 'text' }) => (
+  <div>
+    <label className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">
+      {icon}
+      {label}
+    </label>
+    <input
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="w-full px-4 py-3 bg-gray-800/70 border border-gray-700 rounded-xl text-white text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+    />
+  </div>
+);
 
 export default ContactSection;

@@ -295,12 +295,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/40 z-10 pointer-events-none" />
 
-        {/* Label vue active (multi-vidéos) */}
-        {hasMultipleVideos && (isActive || isFullscreen) && activeVideoLabel && (
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 px-2.5 py-1 rounded-full bg-black/70 border border-white/10 text-[10px] sm:text-xs text-indigo-200 font-medium backdrop-blur-sm">
-            Vue : {activeVideoLabel}
-          </div>
-        )}
+ 
 
         {/* Sélecteur multi-vidéos */}
         {hasMultipleVideos && (isActive || isFullscreen) && (
