@@ -10,7 +10,8 @@ export const projects: Project[] = [
     videoSrc: 'https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/lv_0_20260822135652.mp4',
     demoLink: 'https://frontend-book-track.vercel.app/',
     status: 'soon',
-    githubFrontend: 'https://github.com/NomenaIantsamitia/Book',
+    githubFrontend: 'https://github.com/nomenamisedratiana05/client-bookTrack',
+    githubBackend:'https://github.com/nomenamisedratiana05/api-bookTrack',
     featured: true,
   },
 //https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/admin.mp4
@@ -34,7 +35,7 @@ export const projects: Project[] = [
     ],
     demoLink: 'https://frontend-book-track.vercel.app/',
     status: 'soon',
-    githubFrontend: 'https://github.com/NomenaIantsamitia/Book',
+    githubLink: 'https://github.com/nomenamisedratiana05/aquaVital',
     platforms: ['web'],
     featured: true,
   },
@@ -45,8 +46,9 @@ export const projects: Project[] = [
       'La plateforme ultime pour la gestion des maintenances, techniciens et équipements.',
     technologies: ['React', 'Express.js', 'Socket.io', 'Prisma', 'PostgreSQL'],
     imageSrc: '/maintenaPro.png',
-    demoLink: 'https://front-maitena-pro.vercel.app',
-    githubFrontend: 'https://github.com/NomenaIantsamitia/MaintenaPro',
+     videoSrc: 'https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/lv_0_20260827182508.mp4',
+
+    githubLink: 'https://github.com/nomenamisedratiana05/MaintenaPro',
     featured: false,
   },
   {
@@ -67,7 +69,8 @@ export const projects: Project[] = [
     technologies: ['Next.js', 'NestJS', 'Gemini API', 'PostgreSQL', 'Redis', 'BullMQ', 'Docker', 'TypeScript'],
     imageSrc: '/Readwise.png',
      videoSrc:'https://wpamm0tsfccygdbr.public.blob.vercel-storage.com/lv_0_20260826183947.mp4',
-
+githubFrontend:'https://github.com/nomenamisedratiana05/client-readwiseAI',
+githubBackend:'https://github.com/nomenamisedratiana05/api-readwiseAI',
     // demoLink & github à mettre à jour
     featured: false,
   },

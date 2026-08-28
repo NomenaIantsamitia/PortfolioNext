@@ -265,7 +265,7 @@ const HeroSection: React.FC = () => {
             {
               icon: <Code className="w-5 h-5" />,
               title: '100% Clean Code',
-              subtitle: 'TypeScript strict & TDD',
+              subtitle: 'TypeScript strict',
               color: 'text-fuchsia-400 bg-fuchsia-500/10',
             },
             {
@@ -304,17 +304,17 @@ const HeroSection: React.FC = () => {
         <div className="flex items-center gap-2.5">
           {[
             {
-              href: 'https://github.com/ton-username',
+              href: 'https://github.com/NomenaIantsamitia',
               icon: <Github className="w-5 h-5" />,
               label: 'GitHub',
               hover: 'hover:border-fuchsia-500/50 hover:text-white',
             },
-            {
+            /*{
               href: 'https://linkedin.com/in/ton-profil',
               icon: <Linkedin className="w-5 h-5" />,
               label: 'LinkedIn',
               hover: 'hover:border-indigo-500/50 hover:text-white',
-            },
+            },*/
             {
               href: '#contact',
               icon: <Mail className="w-5 h-5" />,

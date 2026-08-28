@@ -42,7 +42,7 @@ const ContactSection: React.FC = () => {
     setErrorMessage('');
   };
 
-  const envoyerMessage = async () => {
+   const envoyerMessage = async () => {
     clearMessages();
 
     const nomTrim = nom.trim();
@@ -71,16 +71,17 @@ const ContactSection: React.FC = () => {
     };
 
     try {
-      const res = await fetch('https://backportfolio1.onrender.com/contact', {
+      // On appelle maintenant notre propre route API (Next.js), qui utilise Resend en interne
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
-      try {
-        await res.text();
-      } catch {
-        /* ignore body parsing errors */
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.error || 'Une erreur est survenue.');
       }
 
       setSuccessMessage('Merci pour votre message ! Je vous répondrai dans les plus brefs délais. À bientôt !');
@@ -91,12 +92,15 @@ const ContactSection: React.FC = () => {
       setOpportunite('stage');
       setTimeout(() => setSuccessMessage(''), 4000);
     } catch (error) {
-      setErrorMessage('Erreur de connexion. Vérifiez votre internet.');
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : 'Erreur de connexion. Vérifiez votre internet.'
+      );
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <section id="contact" className="relative py-20 sm:py-28 overflow-hidden bg-gray-950">
       {/* Décor cohérent avec le hero : halos + grille subtile */}
@@ -145,7 +149,7 @@ const ContactSection: React.FC = () => {
                 />
               </a>
               <a
-                href="https://github.com/NomenaIantsamitia"
+                href="https://github.com/nomenamisedratiana05"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="col-span-2 md:col-span-1"

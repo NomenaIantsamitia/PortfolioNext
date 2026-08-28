@@ -3,7 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Digital Garden",
+  title: "Nomena Iantsamitia",
   description: "Ton espace personnel de notes connectées 🌱",
 };
 
